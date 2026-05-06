@@ -20,7 +20,7 @@ class Monster(pygame.sprite.Sprite, Creature):
     def __init__(self, name, surf):
         super().__init__()
         self.image = surf 
-        self.rect = self.image.get_frect(bottomleft = (100, WINDOW_HEIGHT))
+        self.rect = self.image.get_frect(bottomleft = (100, WINDOW_HEIGHT - 80))
         self.get_data(name)
     
     def __repr__(self):
@@ -30,5 +30,5 @@ class Opponent(pygame.sprite.Sprite, Creature):
     def __init__(self, name, surf, groups):
         super().__init__(groups)
         self.image = surf
-        self.rect = self.image.get_frect(midbottom = (WINDOW_WIDTH - 250, 300))
+        self.rect = self.image.get_frect(midbottom = (WINDOW_WIDTH - 250, 400))
         self.get_data(name)
