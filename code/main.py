@@ -15,6 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.import_assets()
+        pygame.display.set_icon(self.simple_surfs['Sparchu'])
         self.bg_surfs['bg'] = pygame.transform.scale(self.bg_surfs['bg'], (WINDOW_WIDTH, WINDOW_HEIGHT))
         self.audio['music'].play(-1)
         self.player_active = True

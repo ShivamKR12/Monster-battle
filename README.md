@@ -53,7 +53,7 @@ If you want to run or modify the game's Python source code, follow these steps:
 To compile the game into a standalone `.exe` using PyInstaller, run the following command from the root project directory:
 
 ```bash
-pyinstaller --noconsole --onefile --add-data "images;images" --add-data "audio;audio" code\main.py
+pyinstaller --noconsole --onefile --name MonsterBattle --icon=icon.ico --add-data "icon.ico;." --add-data "images;images" --add-data "audio;audio" code\main.py
 ```
 
 *The compiled game will be generated inside the `dist` folder.*
