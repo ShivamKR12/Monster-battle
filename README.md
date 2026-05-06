@@ -14,6 +14,20 @@ A fully-featured, turn-based monster battling game built in Python using **Pygam
 - **Dynamic UI:** Intuitive, grid-based menus with dynamic health bars and battle logs.
 - **Fullscreen Experience:** Scales seamlessly to your native display resolution.
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="screenshots/0.png" width="32%">
+  <img src="screenshots/1.png" width="32%">
+  <img src="screenshots/2.png" width="32%">
+  <img src="screenshots/3.png" width="32%">
+  <img src="screenshots/4.png" width="32%">
+  <img src="screenshots/5.png" width="32%">
+  <img src="screenshots/6.png" width="32%">
+  <img src="screenshots/7.png" width="32%">
+  <img src="screenshots/8.png" width="32%">
+</p>
+
 ## 🎮 Controls
 
 | Key | Action |
