@@ -1,5 +1,8 @@
 # 🐉 Monster Battle ⚔️
 
+[![Build Status](https://github.com/ShivamKR12/Monster-battle/actions/workflows/build.yml/badge.svg)](https://github.com/ShivamKR12/Monster-battle/actions/workflows/build.yml)
+[![Latest Release](https://img.shields.io/github/v/release/ShivamKR12/Monster-battle?label=Latest%20Release)](https://github.com/ShivamKR12/Monster-battle/releases/latest)
+
 A fully-featured, turn-based monster battling game built in Python using **Pygame-CE**. Assemble your team, master the elemental type matchups, and defeat your opponents to achieve victory!
 
 ## ✨ Features
