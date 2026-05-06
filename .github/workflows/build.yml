@@ -26,17 +26,21 @@ jobs:
         run: |
           pyinstaller --noconsole --onefile --name MonsterBattle --icon=icon.ico --add-data "icon.ico;." --add-data "images;images" --add-data "audio;audio" code\main.py
           
+      - name: Archive executable
+        run: |
+          Compress-Archive -Path dist\MonsterBattle.exe -DestinationPath dist\MonsterBattle-Windows.zip
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: MonsterBattle-Windows
-          path: dist/MonsterBattle.exe
+          path: dist/MonsterBattle-Windows.zip
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.run_number }}
           name: Monster Battle v${{ github.run_number }}
-          files: dist/MonsterBattle.exe
+          files: dist/MonsterBattle-Windows.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
