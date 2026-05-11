@@ -11,3 +11,6 @@ __pycache__/
 *.pyc
 temp.txt
 commands.txt
+
+# docs
+docs/
