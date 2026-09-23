@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['code\\main.py'],
+    ['code/main.py'],
     pathex=[],
     binaries=[],
     datas=[('icon.ico', '.'), ('images', 'images'), ('audio', 'audio')],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='Monster Battle',
+    name='MonsterBattle',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
