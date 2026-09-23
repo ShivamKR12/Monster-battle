@@ -1,16 +1,9 @@
-# Virtual environment
-venv/
-
 # PyInstaller build folders and files
 build/
 dist/
-*.spec
 
 # Python cache and temporary files
 __pycache__/
 *.pyc
 temp.txt
 commands.txt
-
-# docs
-docs/

@@ -1,46 +1,88 @@
-name: Build Windows Executable
+name: Build Desktop Executables
 
 on:
-  [push, workflow_dispatch]
+  push:
+    paths:
+      - '**.py'
+      - '**.spec'
+      - '**.ini'
+      - 'requirements.txt'
+      - 'setup.py'
+      - '.github/workflows/*.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  build:
-    runs-on: windows-latest
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[run ci]')
+  build-desktop:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: '3.13'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install pyinstaller pygame-ce
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        shell: bash
 
-      - name: Build executable with PyInstaller
-        run: |
-          pyinstaller --noconsole --onefile --name MonsterBattle --icon=icon.ico --add-data "icon.ico;." --add-data "images;images" --add-data "audio;audio" code\main.py
-          
-      - name: Archive executable
-        run: |
-          Compress-Archive -Path dist\MonsterBattle.exe -DestinationPath dist\MonsterBattle-Windows.zip
+      - name: Build with PyInstaller
+        run: pyinstaller MonsterBattle.spec
 
-      - name: Upload Artifact
+      - name: Archive Windows executable
+        if: runner.os == 'Windows'
+        run: Compress-Archive -Path dist/MonsterBattle.exe -DestinationPath MonsterBattle-windows.zip
+
+      - name: Archive Linux executable
+        if: runner.os == 'Linux'
+        run: tar -czvf MonsterBattle-linux.tar.gz -C dist MonsterBattle
+
+      - name: Archive macOS application
+        if: runner.os == 'macOS'
+        run: zip -j MonsterBattle-macos.zip dist/MonsterBattle
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MonsterBattle-Windows
-          path: dist/MonsterBattle-Windows.zip
+          name: MonsterBattle-${{ runner.os }}
+          path: |
+            MonsterBattle-*.zip
+            MonsterBattle-*.tar.gz
 
-      - name: Create Release
+  release:
+    name: Create GitHub Release
+    needs: build-desktop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Create Release and upload files
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ github.run_number }}
-          name: Monster Battle v${{ github.run_number }}
-          files: dist/MonsterBattle-Windows.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: v1.0.${{ github.run_number }}
+          name: Monster Battle v1.0.${{ github.run_number }}
+          files: |
+            artifacts/MonsterBattle-Windows/MonsterBattle-windows.zip
+            artifacts/MonsterBattle-Linux/MonsterBattle-linux.tar.gz
+            artifacts/MonsterBattle-macOS/MonsterBattle-macos.zip
