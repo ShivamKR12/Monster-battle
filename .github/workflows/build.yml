@@ -4,11 +4,9 @@ on:
   push:
     paths:
       - '**.py'
-      - '**.spec'
-      - '**.ini'
+      - 'MonsterBattle.spec'
       - 'requirements.txt'
-      - 'setup.py'
-      - '.github/workflows/*.yml'
+      - '.github/workflows/build.yml'
   workflow_dispatch:
 
 permissions:
@@ -86,3 +84,30 @@ jobs:
             artifacts/MonsterBattle-Windows/MonsterBattle-windows.zip
             artifacts/MonsterBattle-Linux/MonsterBattle-linux.tar.gz
             artifacts/MonsterBattle-macOS/MonsterBattle-macos.zip
+
+      - name: Setup Butler
+        uses: remarkablegames/setup-butler@v1
+
+      - name: Publish Windows to itch.io via Butler
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          mkdir -p push_win
+          cp artifacts/MonsterBattle-Windows/MonsterBattle-windows.zip push_win/
+          butler push push_win shivamkr12/monster-battle:windows --userversion v1.0.${{ github.run_number }}
+
+      - name: Publish Linux to itch.io via Butler
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          mkdir -p push_linux
+          cp artifacts/MonsterBattle-Linux/MonsterBattle-linux.tar.gz push_linux/
+          butler push push_linux shivamkr12/monster-battle:linux --userversion v1.0.${{ github.run_number }}
+
+      - name: Publish macOS to itch.io via Butler
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          mkdir -p push_mac
+          cp artifacts/MonsterBattle-macOS/MonsterBattle-macos.zip push_mac/
+          butler push push_mac shivamkr12/monster-battle:mac --userversion v1.0.${{ github.run_number }}
